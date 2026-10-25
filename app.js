@@ -60,7 +60,7 @@ const addTask = function () {
 
   //Append listItem to incompleteTaskHolder
   incompleteTaskHolder.appendChild(listItem);
-  bindTaskEvents(listItem, toggleTaskStatus);
+  bindTaskEvents(listItem);
 
   taskInput.value = '';
 };
@@ -110,28 +110,22 @@ const toggleTaskStatus = function () {
 //Set the click handler to the addTask function.
 addButton.addEventListener('click', addTask);
 
-const bindTaskEvents = function (taskListItem, checkBoxEventHandler) {
-  //select ListItems children
-  const checkBox = taskListItem.querySelector('input[type=checkbox]');
-  const editButton = taskListItem.querySelector('button.edit');
-  const deleteButton = taskListItem.querySelector('button.delete');
+const bindTaskEvents = (taskListItem) => {
+  const getElement = (selector) => taskListItem.querySelector(selector);
 
-  //Bind editTask to edit button.
-  editButton.onclick = editTask;
-  //Bind deleteTask to delete button.
-  deleteButton.onclick = deleteTask;
-  //Bind taskCompleted to checkBoxEventHandler.
-  checkBox.onchange = checkBoxEventHandler;
+  getElement('button.edit').addEventListener('click', editTask);
+  getElement('button.delete').addEventListener('click', deleteTask);
+  getElement('input[type=checkbox]').addEventListener('change', toggleTaskStatus);
 };
 
 //cycle over incompleteTaskHolder ul list items
 //cycle over completedTasksHolder ul list items
 
 const initExistingTasks = () => {
-  [...incompleteTaskHolder.children].forEach((task) => bindTaskEvents(task, toggleTaskStatus));
+  [...incompleteTaskHolder.children].forEach((task) => bindTaskEvents(task));
   [...completedTasksHolder.children].forEach((task) => {
     task.querySelector('input[type=checkbox]').checked = true;
-    bindTaskEvents(task, toggleTaskStatus);
+    bindTaskEvents(task);
   });
 };
 
