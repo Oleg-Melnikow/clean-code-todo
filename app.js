@@ -27,8 +27,9 @@ const createNewTaskElement = (taskTitle) => {
 };
 
 const addTask = function () {
-  if (!taskInput.value) return;
-  const taskItem = createNewTaskElement(taskInput.value);
+  const taskTitle = taskInput.value.trim();
+  if (!taskTitle) return;
+  const taskItem = createNewTaskElement(taskTitle);
 
   incompleteTaskList.append(taskItem);
   bindTaskEvents(taskItem);
@@ -44,11 +45,14 @@ const editTask = function () {
   const isEditMode = taskItem.classList.contains('editMode');
 
   if (isEditMode) {
-    label.innerText = editInput.value;
-    editButton.innerText = 'Edit';
+    const taskText = editInput.value.trim();
+    if (!taskText) return;
+
+    label.textContent = editInput.value;
+    editButton.textContent = 'Edit';
   } else {
-    editInput.value = label.innerText;
-    editButton.innerText = 'Save';
+    editInput.value = label.textContent;
+    editButton.textContent = 'Save';
   }
 
   taskItem.classList.toggle('editMode');
