@@ -3,34 +3,26 @@ const addButton = document.getElementsByTagName('button')[0];
 const incompleteTaskList = document.getElementById('incompleteTasks');
 const completedTasksList = document.getElementById('completed-tasks');
 
-const createNewTaskElement = function (taskTitle) {
-  const taskItem = document.createElement('li');
-  const checkBox = document.createElement('input');
-  const label = document.createElement('label');
-  const editInput = document.createElement('input');
-  const editButton = document.createElement('button');
-  const deleteButton = document.createElement('button');
-  const deleteButtonImg = document.createElement('img');
+const createNewElement = (tag, attributes = {}) => {
+  const element = document.createElement(tag);
+  Object.assign(element, attributes);
 
-  label.innerText = taskTitle;
-  label.className = 'task';
+  return element;
+};
 
-  checkBox.type = 'checkbox';
-  editInput.type = 'text';
-  editInput.className = 'task';
+const createNewTaskElement = (taskTitle) => {
+  const checkBox = createNewElement('input', { type: 'checkbox' });
+  const label = createNewElement('label', { className: 'task', textContent: taskTitle });
+  const editInput = createNewElement('input', { type: 'text', className: 'task' });
+  const editButton = createNewElement('button', { className: 'edit' }, 'Edit');
 
-  editButton.innerText = 'Edit';
-  editButton.className = 'edit';
+  const deleteButton = createNewElement('button', { className: 'delete' });
+  const deleteButtonImg = createNewElement('img', { src: './remove.svg', alt: 'remove' });
+  deleteButton.append(deleteButtonImg);
 
-  deleteButton.className = 'delete';
-  deleteButtonImg.src = './remove.svg';
-  deleteButton.appendChild(deleteButtonImg);
+  const taskItem = createNewElement('li');
+  taskItem.append(checkBox, label, editInput, editButton, deleteButton);
 
-  taskItem.appendChild(checkBox);
-  taskItem.appendChild(label);
-  taskItem.appendChild(editInput);
-  taskItem.appendChild(editButton);
-  taskItem.appendChild(deleteButton);
   return taskItem;
 };
 
@@ -38,7 +30,7 @@ const addTask = function () {
   if (!taskInput.value) return;
   const taskItem = createNewTaskElement(taskInput.value);
 
-  incompleteTaskList.appendChild(taskItem);
+  incompleteTaskList.append(taskItem);
   bindTaskEvents(taskItem);
 
   taskInput.value = '';
