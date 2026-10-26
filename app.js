@@ -62,10 +62,9 @@ const editTask = function () {
   taskItem.classList.toggle('task--edit-mode');
 };
 
-const deleteTask = function () {
-  const taskItem = this.parentNode;
-  const tasksList = taskItem.parentNode;
-  tasksList.removeChild(taskItem);
+const deleteTask = (event) => {
+  const taskItem = event.target.closest('.task');
+  taskItem?.remove();
 };
 
 const toggleTaskStatus = function () {
